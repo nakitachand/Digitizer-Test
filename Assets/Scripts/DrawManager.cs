@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.ARFoundation;
 
 public class DrawManager : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class DrawManager : MonoBehaviour
 
     public Transform selectedPlane;
 
+    private ARAnchorManager anchorManager;
+
+    private List<ARAnchor> aRAnchors = new List<ARAnchor>();
+
     private bool CanDraw
     {
         get;
@@ -34,11 +39,18 @@ public class DrawManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        anchorManager = GetComponent<ARAnchorManager>();
+
+
     }
 
     public void Update()
     {
-        OnDrawTouch();
+        if (selectedPlane)
+        {
+            OnDrawTouch();
+        }
     }
 
     public void AllowDraw(bool value)
@@ -55,9 +67,19 @@ public class DrawManager : MonoBehaviour
 
         if(TraceLines.Keys.Count == 0)
         {
+            ARAnchor anchor = anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
+
+            if(anchor == null)
+            {
+                Debug.LogError("Error creating anchor.");
+            }
+            else
+            {
+                aRAnchors.Add(anchor);
+            }
             LineScript line = new LineScript(TraceLineSettings);
             TraceLines.Add(lineIndex, line);
-            line.AddNewLineRenderer(this.transform, drawPosition);
+            line.AddNewLineRenderer(this.transform, drawPosition, anchor);
         }
         else
         {
@@ -115,9 +137,32 @@ public class DrawManager : MonoBehaviour
             if (Physics.Raycast(ray, out hitObject))
             {
                 Transform hitTransform = hitObject.transform;
-                if(hitTransform == selectedPlane)
+                if (hitTransform == selectedPlane)
                 {
-                    Draw(hitObject.point);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        OnDraw?.Invoke();
+                        ARAnchor anchor = anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
+                        if (anchor == null)
+                        {
+                            Debug.LogError("Error creating anchor.");
+                        }
+                        else
+                        {
+                            aRAnchors.Add(anchor);
+                        }
+                        LineScript line = new LineScript(TraceLineSettings);
+                        TraceLines.Add(touch.fingerId, line);
+                        line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
+                    }
+                    else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                    {
+                        TraceLines[touch.fingerId].AddPoint(hitTransform.position);
+                    }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+                        TraceLines.Remove(touch.fingerId);
+                    }
                 }
             }
         }

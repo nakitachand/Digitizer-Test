@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &373219391
 RectTransform:
   m_ObjectHideFlags: 0
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planeManager: {fileID: 1960976093}
   rayCastManager: {fileID: 1960976092}
-  recticlePrefab: {fileID: 0}
+  recticlePrefab: {fileID: 3770400540450882647, guid: a19e33b2ec2be43ae8ce399b3c3a5351, type: 3}
   cameraTransform: {fileID: 1697808855}
 --- !u!4 &482056302
 Transform:
@@ -413,8 +413,8 @@ MonoBehaviour:
   OnDraw:
     m_PersistentCalls:
       m_Calls: []
-  ARCamera: {fileID: 0}
-  TraceLineSettings: {fileID: 0}
+  ARCamera: {fileID: 1697808851}
+  TraceLineSettings: {fileID: 11400000, guid: e70764d1d5199f546b9b4725e8bb2535, type: 2}
   selectedPlane: {fileID: 0}
 --- !u!4 &632489390
 Transform:
@@ -895,8 +895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dbb046c91c2464d9387038f9a63864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedMaterial: {fileID: 2100000, guid: 26cb9d384662e044198b37ad5944b0e6, type: 2}
-  deSelectedMaterial: {fileID: 2100000, guid: dae402daef2b7c24a8ae06917faf62cd, type: 2}
+  selectedMaterial: {fileID: 2100000, guid: caa9a37c967f3e34faafa5ec2506119b, type: 2}
+  deSelectedMaterial: {fileID: 2100000, guid: 059ecb82508cec743b9608304909fc40, type: 2}
 --- !u!114 &1960976097
 MonoBehaviour:
   m_ObjectHideFlags: 0

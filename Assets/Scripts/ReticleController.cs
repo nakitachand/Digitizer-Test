@@ -37,34 +37,34 @@ public class ReticleController : MonoBehaviour
 
         Vector2 screenCenter = ScreenUtils.GetScreenCenter();
 
-        //Raycast returns true/false
-        if (rayCastManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon))
-        {
-            //reposition the recticle
-            RepositionRecticle();
-        }
+        ////Raycast returns true/false
+        //if (rayCastManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon))
+        //{
+        //    //reposition the recticle
+        //    RepositionRecticle();
+        //}
 
     }
 
-    private void RepositionRecticle()
-    {
-        //saves the first detected position/rotation to variable pose
-        Pose pose = hits[0].pose;
+    //private void RepositionRecticle()
+    //{
+    //    //saves the first detected position/rotation to variable pose
+    //    Pose pose = hits[0].pose;
 
-        //restricts orientation of detected planes via dot product of ray vector to plane's normal vector
-        Vector3 cameraDirection = cameraTransform.position - pose.position;
-        Vector3 planeNormalVector = pose.rotation * Vector3.up;
+    //    //restricts orientation of detected planes via dot product of ray vector to plane's normal vector
+    //    Vector3 cameraDirection = cameraTransform.position - pose.position;
+    //    Vector3 planeNormalVector = pose.rotation * Vector3.up;
 
-        if (Vector3.Dot(cameraDirection, planeNormalVector) >= 0)
-        {
-            recticle.transform.SetPositionAndRotation(pose.position, pose.rotation);
-            recticle.SetActive(true);
-        }
-        else
-        {
-            recticle.SetActive(false);
-        }
+    //    if (Vector3.Dot(cameraDirection, planeNormalVector) >= 0)
+    //    {
+    //        recticle.transform.SetPositionAndRotation(pose.position, pose.rotation);
+    //        recticle.SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        recticle.SetActive(false);
+    //    }
 
 
-    }
+    //}
 }

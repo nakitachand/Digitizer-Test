@@ -9,9 +9,20 @@ public class PlaneSelectionManager : MonoBehaviour
     private Vector2 touchPosition = default;
     private Transform selection;
     private ISelectionResponse selectionResponse;
+    private ARAnchorManager anchorManager;
+    private List<ARAnchor> aRAnchors = new List<ARAnchor>();
+
+    public static PlaneSelectionManager Instance;
+        
+
     void Awake()
     {
         selectionResponse = GetComponent<SelectionResponse>();
+
+        if (Instance == null)
+        { 
+            Instance = this; 
+        }
     }
     void Update()
     {
@@ -26,6 +37,8 @@ public class PlaneSelectionManager : MonoBehaviour
                 {
                     var _selection = selection;
                     selectionResponse.OnDeselect(_selection);
+                    selection.SetParent(null);
+                    aRAnchors.Remove(aRAnchors[aRAnchors.Count]);
                 }
             }
         }
@@ -62,6 +75,9 @@ public class PlaneSelectionManager : MonoBehaviour
                 {
                     var _selection = selection;
                     selectionResponse.OnSelect(_selection);
+                    ARAnchor anchor = anchorManager.AddAnchor(new Pose(_selection.position, _selection.rotation));
+                    aRAnchors.Add(anchor);
+                    selection.parent = anchor.transform;
                 }
             }
         }

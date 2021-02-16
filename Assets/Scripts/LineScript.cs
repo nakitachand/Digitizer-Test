@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class LineScript : MonoBehaviour
 {
@@ -44,11 +45,12 @@ public class LineScript : MonoBehaviour
         
     }
 
-    public void AddNewLineRenderer(Transform parent, Vector3 position)
+    public void AddNewLineRenderer(Transform parent, Vector3 position, ARAnchor anchor)
     {
         positionCount = 2;
 
         GameObject newLine = new GameObject($"Trace Line");
+        newLine.transform.parent = anchor?.transform ?? parent;
 
         newLine.transform.position = position;
         newLine.tag = TraceLineSettings.GameObjectTag;
