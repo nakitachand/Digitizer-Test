@@ -49,7 +49,21 @@ public class DrawManager : MonoBehaviour
     {
         if (selectedPlane)
         {
-            OnDrawTouch();
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                Vector2 screenCenter = ScreenUtils.GetScreenCenter();
+                Ray ray = ARCamera.ScreenPointToRay(screenCenter);
+                RaycastHit hitObject;
+                if (Physics.Raycast(ray, out hitObject))
+                {
+                    Transform hitTransform = hitObject.transform;
+                    if (hitTransform == selectedPlane)
+                    {
+                        Draw(hitObject.point);
+                    }
+                }
+            }
         }
     }
 
@@ -67,7 +81,12 @@ public class DrawManager : MonoBehaviour
 
         if(TraceLines.Keys.Count == 0)
         {
-            ARAnchor anchor = anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
+            
+            LineScript line = new LineScript(TraceLineSettings);
+            TraceLines.Add(lineIndex, line);
+            ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
+            line.AddNewLineRenderer(this.transform, drawPosition); //, anchor);
+            
 
             if(anchor == null)
             {
@@ -77,9 +96,7 @@ public class DrawManager : MonoBehaviour
             {
                 aRAnchors.Add(anchor);
             }
-            LineScript line = new LineScript(TraceLineSettings);
-            TraceLines.Add(lineIndex, line);
-            line.AddNewLineRenderer(this.transform, drawPosition, anchor);
+            
         }
         else
         {
@@ -142,18 +159,19 @@ public class DrawManager : MonoBehaviour
                     if (touch.phase == TouchPhase.Began)
                     {
                         OnDraw?.Invoke();
-                        ARAnchor anchor = anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
-                        if (anchor == null)
-                        {
-                            Debug.LogError("Error creating anchor.");
-                        }
-                        else
-                        {
-                            aRAnchors.Add(anchor);
-                        }
                         LineScript line = new LineScript(TraceLineSettings);
                         TraceLines.Add(touch.fingerId, line);
-                        line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
+                        //ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
+                        //if (anchor == null)
+                        //{
+                        //    Debug.LogError("Error creating anchor.");
+                        //}
+                        //else
+                        //{
+                        //    aRAnchors.Add(anchor);
+                        //}
+
+                        line.AddNewLineRenderer(this.transform, hitTransform.position); //, anchor);
                     }
                     else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                     {

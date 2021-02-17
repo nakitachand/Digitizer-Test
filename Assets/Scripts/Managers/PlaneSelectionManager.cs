@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using System.Linq;
+using UnityEngine.Events;
 public class PlaneSelectionManager : MonoBehaviour
 {
     [SerializeField]
@@ -11,8 +13,12 @@ public class PlaneSelectionManager : MonoBehaviour
     private ISelectionResponse selectionResponse;
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
+    private ARPlane selectedPlane;
 
     public static PlaneSelectionManager Instance;
+
+    public UnityEvent OnSelection;
+    public UnityEvent OnDeselection;
         
 
     void Awake()
@@ -37,8 +43,11 @@ public class PlaneSelectionManager : MonoBehaviour
                 {
                     var _selection = selection;
                     selectionResponse.OnDeselect(_selection);
-                    selection.SetParent(null);
-                    aRAnchors.Remove(aRAnchors[aRAnchors.Count]);
+                    OnDeselection?.Invoke();
+                    if (aRAnchors.Any<ARAnchor>())
+                    {
+                        aRAnchors.RemoveAt(aRAnchors.Count - 1);
+                    }
                 }
             }
         }
@@ -54,11 +63,13 @@ public class PlaneSelectionManager : MonoBehaviour
                 if (Physics.Raycast(ray, out hitObject))
                 {
                     var _selection = hitObject.transform;
-                    var selectedPlane = hitObject.transform.GetComponent<PlaneSelector>();
-                    if (selectedPlane)
+                    var selectedTransform = hitObject.transform.GetComponent<PlaneSelector>();
+                    selectedPlane = hitObject.transform.GetComponent<ARPlane>();
+                    if (selectedPlane && selectedTransform)
                     {
                         selection = _selection;
                         DrawManager.Instance.selectedPlane = selection;
+                        
                     }
                 }
             }
@@ -75,9 +86,10 @@ public class PlaneSelectionManager : MonoBehaviour
                 {
                     var _selection = selection;
                     selectionResponse.OnSelect(_selection);
-                    ARAnchor anchor = anchorManager.AddAnchor(new Pose(_selection.position, _selection.rotation));
-                    aRAnchors.Add(anchor);
-                    selection.parent = anchor.transform;
+                    OnSelection?.Invoke();
+                    anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
+                    aRAnchors.Add(selectedPlane.GetComponent<ARAnchor>());
+                    
                 }
             }
         }
