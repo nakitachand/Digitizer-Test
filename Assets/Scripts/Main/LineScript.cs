@@ -47,12 +47,12 @@ public class LineScript : MonoBehaviour
         
     }
 
-    public void AddNewLineRenderer(Transform parent, Vector3 position) //, ARAnchor anchor)
+    public void AddNewLineRenderer(Transform parent, Vector3 position, ARAnchor anchor)
     {
         positionCount = 2;
 
         GameObject newLine = new GameObject($"Trace Line");
-        //newLine.transform.parent = anchor?.transform ?? parent;
+        newLine.transform.parent = anchor?.transform ?? parent;
 
         newLine.transform.position = position;
         newLine.tag = TraceLineSettings.GameObjectTag;

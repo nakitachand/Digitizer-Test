@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
-public class DrawManager : MonoBehaviour
+public class DrawManager : Singleton<DrawManager>
 {
-    public static DrawManager Instance;
+    //public static DrawManager Instance;
 
     [SerializeField]
     private UnityEvent OnDraw = null;
@@ -22,6 +22,7 @@ public class DrawManager : MonoBehaviour
 
     public Transform selectedPlane;
 
+    [SerializeField]
     private ARAnchorManager anchorManager;
 
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
@@ -36,10 +37,10 @@ public class DrawManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //}
 
         anchorManager = GetComponent<ARAnchorManager>();
 
@@ -48,25 +49,27 @@ public class DrawManager : MonoBehaviour
 
     public void Update()
     {
-        if (selectedPlane)
-        {
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                Vector2 screenCenter = ScreenUtils.GetScreenCenter();
-                Ray ray = ARCamera.ScreenPointToRay(screenCenter);
-                RaycastHit hitObject;
-                if (Physics.Raycast(ray, out hitObject))
-                {
-                    Transform hitTransform = hitObject.transform;
-                    if (hitTransform == selectedPlane)
-                    {
-                        DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
-                        Draw(hitObject.point);
-                    }
-                }
-            }
-        }
+        ////if (selectedPlane)
+        ////{
+        //    if (Input.touchCount > 0)
+        //    {
+        //        Touch touch = Input.GetTouch(0);
+        //        Vector2 screenCenter = ScreenUtils.GetScreenCenter();
+        //        Ray ray = ARCamera.ScreenPointToRay(screenCenter);
+        //        RaycastHit hitObject;
+        //        if (Physics.Raycast(ray, out hitObject))
+        //        {
+        //            Transform hitTransform = hitObject.transform;
+        //        //if (hitTransform == selectedPlane)
+        //        //{
+        //        DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+        //        //Draw(hitObject.point);
+        //        OnDrawTouch();
+        //        //}
+        //    }
+        //    }
+        ////}
+        OnDrawTouch();
     }
 
     public void AllowDraw(bool value)
@@ -87,7 +90,7 @@ public class DrawManager : MonoBehaviour
             LineScript line = new LineScript(TraceLineSettings);
             TraceLines.Add(lineIndex, line);
             ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
-            line.AddNewLineRenderer(this.transform, drawPosition); //, anchor);
+            line.AddNewLineRenderer(this.transform, drawPosition, anchor);
             
 
             if(anchor == null)
@@ -174,7 +177,7 @@ public class DrawManager : MonoBehaviour
                             aRAnchors.Add(anchor);
                         }
 
-                        line.AddNewLineRenderer(this.transform, hitTransform.position); //, anchor);
+                        line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
                     }
                     else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                     {

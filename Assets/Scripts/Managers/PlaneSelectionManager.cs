@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using System.Linq;
 using UnityEngine.Events;
-public class PlaneSelectionManager : MonoBehaviour
+public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 {
     [SerializeField]
     private Camera arCamera;
@@ -14,23 +14,15 @@ public class PlaneSelectionManager : MonoBehaviour
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
     private ARPlane selectedPlane;
-
-    public static PlaneSelectionManager Instance;
-
     public UnityEvent OnSelection;
     public UnityEvent OnDeselection;
-        
+
 
     void Awake()
     {
         selectionResponse = GetComponent<SelectionResponse>();
-
-        if (Instance == null)
-        { 
-            Instance = this; 
-        }
     }
-    void Update()
+        void Update()
     {
         // Deselection
         if (Input.touchCount > 0)

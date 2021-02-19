@@ -3,25 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugManager : MonoBehaviour
+public class DebugManager : Singleton<DebugManager>
 {
-    private static DebugManager _instance;
-    public static DebugManager Instance
-    {
-        get
-        { return _instance; }
-    }
+    
     [SerializeField]
     private Text text;
 
+    [SerializeField]
+    private int maxLines = 100;
 
     public void Awake()
     {
-        _instance = this;
+        
     }
 
     public void LogInfo (string message)
     {
-        text.text = $"{message}";
+        ClearLines();
+        text.text += $"{message} \n";
+    }
+
+    private void ClearLines()
+    {
+        if(text.text.Split('\n').Length >= maxLines)
+        {
+            text.text = string.Empty;
+        }
     }
 }

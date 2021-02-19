@@ -24,3 +24,4 @@ MonoBehaviour:
   MinDistanceBetweenPoints: 0.001
   Simplification: 0
   Tolerance: 0.001
+  SimplifyAfterPoints: 20
