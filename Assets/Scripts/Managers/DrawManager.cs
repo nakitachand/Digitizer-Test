@@ -26,6 +26,7 @@ public class DrawManager : MonoBehaviour
 
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
 
+    
     private bool CanDraw
     {
         get;
@@ -60,6 +61,7 @@ public class DrawManager : MonoBehaviour
                     Transform hitTransform = hitObject.transform;
                     if (hitTransform == selectedPlane)
                     {
+                        DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
                         Draw(hitObject.point);
                     }
                 }
@@ -90,7 +92,7 @@ public class DrawManager : MonoBehaviour
 
             if(anchor == null)
             {
-                Debug.LogError("Error creating anchor.");
+                DebugManager.Instance.LogInfo($"Error creating anchor.");
             }
             else
             {
@@ -100,6 +102,7 @@ public class DrawManager : MonoBehaviour
         }
         else
         {
+            DebugManager.Instance.LogInfo($"{drawPosition}");
             TraceLines[0].AddPoint(drawPosition);
         }
 
@@ -161,15 +164,15 @@ public class DrawManager : MonoBehaviour
                         OnDraw?.Invoke();
                         LineScript line = new LineScript(TraceLineSettings);
                         TraceLines.Add(touch.fingerId, line);
-                        //ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
-                        //if (anchor == null)
-                        //{
-                        //    Debug.LogError("Error creating anchor.");
-                        //}
-                        //else
-                        //{
-                        //    aRAnchors.Add(anchor);
-                        //}
+                        ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
+                        if (anchor == null)
+                        {
+                            Debug.LogError("Error creating anchor.");
+                        }
+                        else
+                        {
+                            aRAnchors.Add(anchor);
+                        }
 
                         line.AddNewLineRenderer(this.transform, hitTransform.position); //, anchor);
                     }

@@ -33,7 +33,9 @@ public class LineScript : MonoBehaviour
         {
             previousPointDistance = point;
             positionCount++;
+            
             LineRenderer.positionCount = positionCount;
+            
             LineRenderer.SetPosition(positionCount - 1, point);
 
             if (LineRenderer.positionCount % TraceLineSettings.SimplifyAfterPoints == 0 && TraceLineSettings.Simplification)
@@ -68,6 +70,7 @@ public class LineScript : MonoBehaviour
         line.SetPosition(0, position);
         line.SetPosition(1, position);
         LineRenderer = line;
+        DebugManager.Instance.LogInfo($"New Line Renderer added.");
     }
 
 }
