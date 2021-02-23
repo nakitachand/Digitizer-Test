@@ -5,14 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-//script to select a detected plane by touch
-//needs to have a function return a pose or transform for the lastSelectedPlane
+//This script is attached to the ARPlane prefab to enable selection and deselection methods
+//declared in the ISelectionResponse interface and implemented in the SelectionResponse class
 
 public class PlaneSelector : MonoBehaviour
 {
     private bool planeIsSelected;
-    public Material highlightedPlane;
-    public Material unHighlightedPlane;
 
     public bool IsSelected
     {
@@ -27,29 +25,31 @@ public class PlaneSelector : MonoBehaviour
         }
     }
 
-    public void Highlight()
-    {
-        this.GetComponent<Renderer>().material = highlightedPlane;
-    }
-
-    public void UnHighlight()
-    {
-        this.GetComponent<Renderer>().material = unHighlightedPlane;
-
-    }
-
-    public void OnEnable()
-    {
-        
-    }
-
-    public void OnDisable()
-    {
-
-    }
-
     public void ToggleSelectedMaterial(Material selectionMaterial)
     {
         this.GetComponent<Renderer>().material = selectionMaterial;
     }
+
+    //public void Highlight()
+    //{
+    //    this.GetComponent<Renderer>().material = highlightedPlane;
+    //}
+
+    //public void UnHighlight()
+    //{
+    //    this.GetComponent<Renderer>().material = unHighlightedPlane;
+
+    //}
+
+    //public void OnEnable()
+    //{
+
+    //}
+
+    //public void OnDisable()
+    //{
+
+    //}
+
+
 }

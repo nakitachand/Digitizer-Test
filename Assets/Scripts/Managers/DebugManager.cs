@@ -12,11 +12,6 @@ public class DebugManager : Singleton<DebugManager>
     [SerializeField]
     private int maxLines = 100;
 
-    public void Awake()
-    {
-        
-    }
-
     public void LogInfo (string message)
     {
         ClearLines();

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
+[RequireComponent(typeof(ARAnchorManager))]
 public class DrawManager : Singleton<DrawManager>
 {
     //public static DrawManager Instance;
@@ -27,24 +28,12 @@ public class DrawManager : Singleton<DrawManager>
 
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
 
-    
-    private bool CanDraw
-    {
-        get;
-        set;
-    }
+    private bool CanDraw { get; set; }
 
     // Start is called before the first frame update
     void Awake()
     {
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //}
-
         anchorManager = GetComponent<ARAnchorManager>();
-
-
     }
 
     public void Update()
@@ -69,7 +58,7 @@ public class DrawManager : Singleton<DrawManager>
         //    }
         //    }
         ////}
-        OnDrawTouch();
+        //OnDrawTouch();
     }
 
     public void AllowDraw(bool value)
@@ -164,20 +153,25 @@ public class DrawManager : Singleton<DrawManager>
                 {
                     if (touch.phase == TouchPhase.Began)
                     {
+                            DebugManager.Instance.LogInfo($"screen touched");
                         OnDraw?.Invoke();
+                            DebugManager.Instance.LogInfo($"OnDraw invoked");
                         LineScript line = new LineScript(TraceLineSettings);
                         TraceLines.Add(touch.fingerId, line);
-                        ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(hitTransform.position, Quaternion.identity));
+                        DebugManager.Instance.LogInfo($"{hitObject.transform.position}");
+                        ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>();
+                            
                         if (anchor == null)
                         {
-                            Debug.LogError("Error creating anchor.");
+                            DebugManager.Instance.LogInfo($"Error creating anchor.");
                         }
                         else
                         {
                             aRAnchors.Add(anchor);
                         }
-
+                        
                         line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
+                            DebugManager.Instance.LogInfo($"There should be lines.");
                     }
                     else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                     {

@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using System.Linq;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
+
+
 public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 {
     [SerializeField]
@@ -14,15 +18,29 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
     private ARPlane selectedPlane;
+    //private ARPlaneManager arPlaneManager;
     public UnityEvent OnSelection;
     public UnityEvent OnDeselection;
 
+    [SerializeField]
+    private Button lockPlaneButton;
 
     void Awake()
     {
         selectionResponse = GetComponent<SelectionResponse>();
+
+        //arPlaneManager = GetComponent<ARPlaneManager>();
     }
-        void Update()
+    void Update()
+    {
+        //eventually this update can listen for plane selection event to be toggled on which can then run the planeselectionsequence
+        //if(selection != null)
+        //{
+            PlaneSelectionSequence();
+        //}
+    }
+
+    void PlaneSelectionSequence()
     {
         // Deselection
         if (Input.touchCount > 0)
@@ -35,6 +53,8 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                 {
                     var _selection = selection;
                     selectionResponse.OnDeselect(_selection);
+                    //LockPlaneButton(disable);
+                    //HidePlanes(false);
                     OnDeselection?.Invoke();
                     if (aRAnchors.Any<ARAnchor>())
                     {
@@ -61,7 +81,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                     {
                         selection = _selection;
                         DrawManager.Instance.selectedPlane = selection;
-                        
+
                     }
                 }
             }
@@ -78,12 +98,31 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                 {
                     var _selection = selection;
                     selectionResponse.OnSelect(_selection);
+                    //lockPlaneButton
+                    //HidePlanes(true);
                     OnSelection?.Invoke();
                     anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
                     aRAnchors.Add(selectedPlane.GetComponent<ARAnchor>());
-                    
+
                 }
             }
         }
+    }
+
+    public void LockPlaneButton()
+    {
+        //keep selected plane fixed and visible
+        //hide plane prefab after 2 seconds
+        //display text prompt to begin drawing
+        DebugManager.Instance.LogInfo($"Lock Planes.");
+    }
+
+    public void HidePlanes()
+    {
+        //hide all deselected planes
+        //
+        
+        //arPlaneManager.enabled = false;
+        DebugManager.Instance.LogInfo($"Hide Planes.");
     }
 }
