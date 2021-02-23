@@ -30,6 +30,8 @@ public class DrawManager : Singleton<DrawManager>
 
     private bool CanDraw { get; set; }
 
+    private ARAnchor anchor;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -38,27 +40,26 @@ public class DrawManager : Singleton<DrawManager>
 
     public void Update()
     {
-        ////if (selectedPlane)
-        ////{
-        //    if (Input.touchCount > 0)
-        //    {
-        //        Touch touch = Input.GetTouch(0);
-        //        Vector2 screenCenter = ScreenUtils.GetScreenCenter();
-        //        Ray ray = ARCamera.ScreenPointToRay(screenCenter);
-        //        RaycastHit hitObject;
-        //        if (Physics.Raycast(ray, out hitObject))
-        //        {
-        //            Transform hitTransform = hitObject.transform;
-        //        //if (hitTransform == selectedPlane)
-        //        //{
-        //        DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
-        //        //Draw(hitObject.point);
-        //        OnDrawTouch();
-        //        //}
-        //    }
-        //    }
-        ////}
-        //OnDrawTouch();
+        //if (selectedPlane)
+        //{
+        //if (Input.touchCount > 0)
+        //{
+            Touch touch = Input.GetTouch(0);
+            Vector2 screenCenter = ScreenUtils.GetScreenCenter();
+            Ray ray = ARCamera.ScreenPointToRay(screenCenter);
+            RaycastHit hitObject;
+            if (Physics.Raycast(ray, out hitObject))
+            {
+                Transform hitTransform = hitObject.transform;
+                //if (hitTransform == selectedPlane)
+                //{
+                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+                Draw(hitObject.point);
+                //}
+            }
+        //}
+        //}
+
     }
 
     public void AllowDraw(bool value)
@@ -78,18 +79,18 @@ public class DrawManager : Singleton<DrawManager>
             
             LineScript line = new LineScript(TraceLineSettings);
             TraceLines.Add(lineIndex, line);
-            ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
+            //ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
             line.AddNewLineRenderer(this.transform, drawPosition, anchor);
             
 
-            if(anchor == null)
-            {
-                DebugManager.Instance.LogInfo($"Error creating anchor.");
-            }
-            else
-            {
-                aRAnchors.Add(anchor);
-            }
+            //if(anchor == null)
+            //{
+            //    DebugManager.Instance.LogInfo($"Error creating anchor.");
+            //}
+            //else
+            //{
+            //    aRAnchors.Add(anchor);
+            //}
             
         }
         else
@@ -140,49 +141,54 @@ public class DrawManager : Singleton<DrawManager>
 
     public void OnDrawTouch()
     {
-        if(Input.touchCount > 0)
+        int tapCount = Input.touchCount > 1 && TraceLineSettings.allowMultipleTouch ? Input.touchCount : 1;
+        for (int i = 0; i < tapCount; i++)
         {
-            Touch touch = Input.GetTouch(0);
-            Vector2 screenCenter = ScreenUtils.GetScreenCenter();
-            Ray ray = ARCamera.ScreenPointToRay(screenCenter);
-            RaycastHit hitObject;
-            if (Physics.Raycast(ray, out hitObject))
-            {
-                Transform hitTransform = hitObject.transform;
-                if (hitTransform == selectedPlane)
+            //if (Input.touchCount > 0)
+            //{
+                Touch touch = Input.GetTouch(i);
+                Vector2 screenCenter = ScreenUtils.GetScreenCenter();
+            DebugManager.Instance.LogInfo($"{touch.fingerId}");
+                Ray ray = ARCamera.ScreenPointToRay(screenCenter);
+                RaycastHit hitObject;
+                if (Physics.Raycast(ray, out hitObject))
                 {
-                    if (touch.phase == TouchPhase.Began)
+                    Transform hitTransform = hitObject.transform;
+                    if (hitTransform == selectedPlane)
                     {
-                            DebugManager.Instance.LogInfo($"screen touched");
-                        OnDraw?.Invoke();
-                            DebugManager.Instance.LogInfo($"OnDraw invoked");
-                        LineScript line = new LineScript(TraceLineSettings);
-                        TraceLines.Add(touch.fingerId, line);
-                        DebugManager.Instance.LogInfo($"{hitObject.transform.position}");
-                        ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>();
+                        if (touch.phase == TouchPhase.Began)
+                        {
+                            //DebugManager.Instance.LogInfo($"screen touched");
+                            OnDraw?.Invoke();
+                            //DebugManager.Instance.LogInfo($"OnDraw invoked");
+                            LineScript line = new LineScript(TraceLineSettings);
+                            TraceLines.Add(touch.fingerId, line);
+                            DebugManager.Instance.LogInfo($"{hitObject.transform.position}");
+                        //    ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>();
                             
-                        if (anchor == null)
-                        {
-                            DebugManager.Instance.LogInfo($"Error creating anchor.");
-                        }
-                        else
-                        {
-                            aRAnchors.Add(anchor);
-                        }
-                        
+                        //if (anchor == null)
+                        //    {
+                        //        DebugManager.Instance.LogInfo($"Error creating anchor.");
+                        //    }
+                        //    else
+                        //    {
+                        //        aRAnchors.Add(anchor);
+                        //    }
+                            
                         line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
-                            DebugManager.Instance.LogInfo($"There should be lines.");
-                    }
-                    else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                    {
-                        TraceLines[touch.fingerId].AddPoint(hitTransform.position);
-                    }
-                    else if (touch.phase == TouchPhase.Ended)
-                    {
-                        TraceLines.Remove(touch.fingerId);
+                        DebugManager.Instance.LogInfo($"There should be lines.");
+                        }
+                        else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                        {
+                            TraceLines[touch.fingerId].AddPoint(hitTransform.position);
+                        }
+                        else if (touch.phase == TouchPhase.Ended)
+                        {
+                            TraceLines.Remove(touch.fingerId);
+                        }
                     }
                 }
-            }
+            //}
         }
     }
 }

@@ -25,5 +25,5 @@ public class TraceLineSettings : ScriptableObject
     public bool Simplification = false;
     public float Tolerance = 0.001f;
     public float SimplifyAfterPoints = 20f;
-
+    public bool allowMultipleTouch = true;
 }

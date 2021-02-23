@@ -135,13 +135,13 @@ GameObject:
   - component: {fileID: 40919618}
   - component: {fileID: 40919617}
   - component: {fileID: 40919616}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Draw Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &40919615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -204,19 +204,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 40919617}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 632489389}
-        m_TargetAssemblyTypeName: DrawManager, Assembly-CSharp
-        m_MethodName: OnDrawTouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &40919617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +254,7 @@ GameObject:
   - component: {fileID: 223974227}
   - component: {fileID: 223974229}
   - component: {fileID: 223974228}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +585,7 @@ GameObject:
   - component: {fileID: 495089757}
   - component: {fileID: 495089759}
   - component: {fileID: 495089758}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1012,7 +1000,7 @@ GameObject:
   - component: {fileID: 753944319}
   - component: {fileID: 753944321}
   - component: {fileID: 753944320}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1092,7 +1080,7 @@ GameObject:
   - component: {fileID: 1099964922}
   - component: {fileID: 1099964921}
   - component: {fileID: 1099964920}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Lock Plane Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1224,7 +1212,7 @@ GameObject:
   - component: {fileID: 1219702780}
   - component: {fileID: 1219702779}
   - component: {fileID: 1219702778}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Hide Planes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,7 +1410,7 @@ GameObject:
   - component: {fileID: 1300948390}
   - component: {fileID: 1300948389}
   - component: {fileID: 1300948388}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1546,8 +1534,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -159, y: 31}
-  m_SizeDelta: {x: 320, y: 320}
+  m_AnchoredPosition: {x: -159, y: 60}
+  m_SizeDelta: {x: 320, y: 1600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1303141013
 MonoBehaviour:
@@ -1586,10 +1574,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
