@@ -18,7 +18,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
     private ARPlane selectedPlane;
-    //private ARPlaneManager arPlaneManager;
+    
     public UnityEvent OnSelection;
     public UnityEvent OnDeselection;
 
@@ -28,8 +28,6 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     void Awake()
     {
         selectionResponse = GetComponent<SelectionResponse>();
-
-        //arPlaneManager = GetComponent<ARPlaneManager>();
     }
     void Update()
     {
@@ -71,8 +69,8 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
             if (touch.phase == TouchPhase.Began)
             {
                 Ray ray = arCamera.ScreenPointToRay(touch.position);
-                RaycastHit hitObject;
-                if (Physics.Raycast(ray, out hitObject))
+                
+                if (Physics.Raycast(ray, out RaycastHit hitObject))
                 {
                     var _selection = hitObject.transform;
                     var selectedTransform = hitObject.transform.GetComponent<PlaneSelector>();
@@ -120,9 +118,6 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     public void HidePlanes()
     {
         //hide all deselected planes
-        //
-        
-        //arPlaneManager.enabled = false;
         DebugManager.Instance.LogInfo($"Hide Planes.");
     }
 }

@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(ARAnchorManager))]
 public class DrawManager : Singleton<DrawManager>
 {
-    //public static DrawManager Instance;
-
     [SerializeField]
     private UnityEvent OnDraw = null;
+
+    //[SerializeField]
+    //private UnityEvent OnButtonHold;
+
+    //[SerializeField]
+    //private UnityEvent OnButtonRelease;
 
     [SerializeField]
     Camera ARCamera;
@@ -23,43 +28,25 @@ public class DrawManager : Singleton<DrawManager>
 
     public Transform selectedPlane;
 
-    [SerializeField]
-    private ARAnchorManager anchorManager;
-
-    private List<ARAnchor> aRAnchors = new List<ARAnchor>();
-
     private bool CanDraw { get; set; }
 
     private ARAnchor anchor;
 
+    //[SerializeField]
+    //private Button drawButton;
+
+    //private bool isPressed = false;
+
     // Start is called before the first frame update
-    void Awake()
-    {
-        anchorManager = GetComponent<ARAnchorManager>();
-    }
+    //void Awake()
+    //{
+
+    //}
 
     public void Update()
     {
-        //if (selectedPlane)
-        //{
-        //if (Input.touchCount > 0)
-        //{
-            Touch touch = Input.GetTouch(0);
-            Vector2 screenCenter = ScreenUtils.GetScreenCenter();
-            Ray ray = ARCamera.ScreenPointToRay(screenCenter);
-            RaycastHit hitObject;
-            if (Physics.Raycast(ray, out hitObject))
-            {
-                Transform hitTransform = hitObject.transform;
-                //if (hitTransform == selectedPlane)
-                //{
-                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
-                Draw(hitObject.point);
-                //}
-            }
-        //}
-        //}
-
+        
+        DrawOnTouch();
     }
 
     public void AllowDraw(bool value)
@@ -69,29 +56,13 @@ public class DrawManager : Singleton<DrawManager>
 
     public void Draw(Vector3 drawPosition)
     {
-        if(!CanDraw)
-        {
-            return;
-        }
+        if (!CanDraw) { return; }
 
-        if(TraceLines.Keys.Count == 0)
+        if (TraceLines.Keys.Count == 0)
         {
-            
             LineScript line = new LineScript(TraceLineSettings);
             TraceLines.Add(lineIndex, line);
-            //ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>(); //anchorManager.AddAnchor(new Pose(drawPosition, Quaternion.identity));
             line.AddNewLineRenderer(this.transform, drawPosition, anchor);
-            
-
-            //if(anchor == null)
-            //{
-            //    DebugManager.Instance.LogInfo($"Error creating anchor.");
-            //}
-            //else
-            //{
-            //    aRAnchors.Add(anchor);
-            //}
-            
         }
         else
         {
@@ -100,6 +71,27 @@ public class DrawManager : Singleton<DrawManager>
         }
 
         OnDraw?.Invoke();
+    }
+
+    public void DrawOnTouch()
+    {
+        
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+        {
+            Vector2 screenCenter = ScreenUtils.GetScreenCenter();
+            Ray ray = ARCamera.ScreenPointToRay(screenCenter);
+
+            if (Physics.Raycast(ray, out RaycastHit hitObject))
+            {
+                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+                Draw(hitObject.point);
+            }
+        }
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            TraceLines.Remove(touch.fingerId);
+        }
     }
 
     public void StopDrawing()
@@ -116,7 +108,7 @@ public class DrawManager : Singleton<DrawManager>
     {
         GameObject[] Lines = GetAllLinesInScene();
 
-        foreach(GameObject TraceLine in Lines)
+        foreach (GameObject TraceLine in Lines)
         {
             LineRenderer line = TraceLine.GetComponent<LineRenderer>();
             Destroy(line);
@@ -125,7 +117,7 @@ public class DrawManager : Singleton<DrawManager>
 
     public void ShowLines()
     {
-        foreach(var line in GetAllLinesInScene())
+        foreach (var line in GetAllLinesInScene())
         {
             line.SetActive(true);
         }
@@ -133,64 +125,12 @@ public class DrawManager : Singleton<DrawManager>
 
     public void HideLines()
     {
-        foreach(var line in GetAllLinesInScene())
+        foreach (var line in GetAllLinesInScene())
         {
             line.SetActive(false);
         }
     }
 
-    public void OnDrawTouch()
-    {
-        int tapCount = Input.touchCount > 1 && TraceLineSettings.allowMultipleTouch ? Input.touchCount : 1;
-        for (int i = 0; i < tapCount; i++)
-        {
-            //if (Input.touchCount > 0)
-            //{
-                Touch touch = Input.GetTouch(i);
-                Vector2 screenCenter = ScreenUtils.GetScreenCenter();
-            DebugManager.Instance.LogInfo($"{touch.fingerId}");
-                Ray ray = ARCamera.ScreenPointToRay(screenCenter);
-                RaycastHit hitObject;
-                if (Physics.Raycast(ray, out hitObject))
-                {
-                    Transform hitTransform = hitObject.transform;
-                    if (hitTransform == selectedPlane)
-                    {
-                        if (touch.phase == TouchPhase.Began)
-                        {
-                            //DebugManager.Instance.LogInfo($"screen touched");
-                            OnDraw?.Invoke();
-                            //DebugManager.Instance.LogInfo($"OnDraw invoked");
-                            LineScript line = new LineScript(TraceLineSettings);
-                            TraceLines.Add(touch.fingerId, line);
-                            DebugManager.Instance.LogInfo($"{hitObject.transform.position}");
-                        //    ARAnchor anchor = line.gameObject.AddComponent<ARAnchor>();
-                            
-                        //if (anchor == null)
-                        //    {
-                        //        DebugManager.Instance.LogInfo($"Error creating anchor.");
-                        //    }
-                        //    else
-                        //    {
-                        //        aRAnchors.Add(anchor);
-                        //    }
-                            
-                        line.AddNewLineRenderer(this.transform, hitTransform.position, anchor);
-                        DebugManager.Instance.LogInfo($"There should be lines.");
-                        }
-                        else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                        {
-                            TraceLines[touch.fingerId].AddPoint(hitTransform.position);
-                        }
-                        else if (touch.phase == TouchPhase.Ended)
-                        {
-                            TraceLines.Remove(touch.fingerId);
-                        }
-                    }
-                }
-            //}
-        }
-    }
 }
 
- 
+
