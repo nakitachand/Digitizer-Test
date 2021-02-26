@@ -135,8 +135,7 @@ GameObject:
   - component: {fileID: 40919618}
   - component: {fileID: 40919617}
   - component: {fileID: 40919616}
-  - component: {fileID: 40919619}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Draw Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +207,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 632489389}
         m_TargetAssemblyTypeName: DrawManager, Assembly-CSharp
-        m_MethodName: Update
+        m_MethodName: AllowDraw
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -256,18 +255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 40919614}
   m_CullTransparentMesh: 0
---- !u!114 &40919619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40919614}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aec341f9fdb3164449050956149067be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &223974226
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +266,7 @@ GameObject:
   - component: {fileID: 223974227}
   - component: {fileID: 223974229}
   - component: {fileID: 223974228}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,7 +597,7 @@ GameObject:
   - component: {fileID: 495089757}
   - component: {fileID: 495089759}
   - component: {fileID: 495089758}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +1011,7 @@ GameObject:
   - component: {fileID: 753944319}
   - component: {fileID: 753944321}
   - component: {fileID: 753944320}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1083,7 +1070,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lock Plane
+  m_Text: Show Planes
 --- !u!222 &753944321
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1104,7 +1091,7 @@ GameObject:
   - component: {fileID: 1099964922}
   - component: {fileID: 1099964921}
   - component: {fileID: 1099964920}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Lock Plane Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,7 +1163,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1960976097}
         m_TargetAssemblyTypeName: PlaneSelectionManager, Assembly-CSharp
-        m_MethodName: LockPlaneButton
+        m_MethodName: AllowSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1236,7 +1223,7 @@ GameObject:
   - component: {fileID: 1219702780}
   - component: {fileID: 1219702779}
   - component: {fileID: 1219702778}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Hide Planes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1434,7 +1421,7 @@ GameObject:
   - component: {fileID: 1300948390}
   - component: {fileID: 1300948389}
   - component: {fileID: 1300948388}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1559,7 +1546,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -159, y: 100}
-  m_SizeDelta: {x: 320, y: 200}
+  m_SizeDelta: {x: 320, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1303141013
 MonoBehaviour:
@@ -1875,6 +1862,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   lockPlaneButton: {fileID: 1099964920}
+  aRPlaneManager: {fileID: 0}
 --- !u!114 &1960976098
 MonoBehaviour:
   m_ObjectHideFlags: 0

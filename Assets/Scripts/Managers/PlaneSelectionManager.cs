@@ -18,27 +18,42 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
     private ARPlane selectedPlane;
-    
+
     public UnityEvent OnSelection;
     public UnityEvent OnDeselection;
 
     [SerializeField]
     private Button lockPlaneButton;
 
+    [SerializeField]
+    private ARPlaneManager aRPlaneManager;
+
+    private bool CanSelect
+    {
+        get;
+        set;
+    }
+
     void Awake()
     {
         selectionResponse = GetComponent<SelectionResponse>();
+
+        aRPlaneManager = GetComponent<ARPlaneManager>();
     }
-    void Update()
+    public void Update()
     {
-        //eventually this update can listen for plane selection event to be toggled on which can then run the planeselectionsequence
-        //if(selection != null)
-        //{
-            PlaneSelectionSequence();
-        //}
+        if (CanSelect) { return; }
+
+        PlaneSelectionSequence();
+
     }
 
-    void PlaneSelectionSequence()
+    public void AllowSelect()
+    {
+        CanSelect = !CanSelect;
+    }
+
+    public void PlaneSelectionSequence()
     {
         // Deselection
         if (Input.touchCount > 0)
@@ -69,7 +84,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
             if (touch.phase == TouchPhase.Began)
             {
                 Ray ray = arCamera.ScreenPointToRay(touch.position);
-                
+
                 if (Physics.Raycast(ray, out RaycastHit hitObject))
                 {
                     var _selection = hitObject.transform;
@@ -118,6 +133,12 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     public void HidePlanes()
     {
         //hide all deselected planes
-        DebugManager.Instance.LogInfo($"Hide Planes.");
+        DebugManager.Instance.LogInfo($"Hide Planes.{CanSelect}");
+        CanSelect = !CanSelect;
+        aRPlaneManager.SetTrackablesActive(CanSelect);
+        
     }
+
+    public void SetTrackablesActive(bool active)
+    { }
 }

@@ -45,8 +45,12 @@ public class DrawManager : Singleton<DrawManager>
 
     public void Update()
     {
-        
+        if (!CanDraw) { return; }
         DrawOnTouch();
+    }
+    public void AllowDraw()
+    {
+        CanDraw = !CanDraw;
     }
 
     public void AllowDraw(bool value)
@@ -56,8 +60,7 @@ public class DrawManager : Singleton<DrawManager>
 
     public void Draw(Vector3 drawPosition)
     {
-        if (!CanDraw) { return; }
-
+        
         if (TraceLines.Keys.Count == 0)
         {
             LineScript line = new LineScript(TraceLineSettings);
@@ -75,7 +78,7 @@ public class DrawManager : Singleton<DrawManager>
 
     public void DrawOnTouch()
     {
-        
+
         Touch touch = Input.GetTouch(0);
         if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
         {
@@ -84,7 +87,7 @@ public class DrawManager : Singleton<DrawManager>
 
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+                //DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
                 Draw(hitObject.point);
             }
         }
