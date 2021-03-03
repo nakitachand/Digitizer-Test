@@ -5,17 +5,11 @@ using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ARAnchorManager))]
+//[RequireComponent(typeof(ARAnchorManager))]
 public class DrawManager : Singleton<DrawManager>
 {
     [SerializeField]
     private UnityEvent OnDraw = null;
-
-    //[SerializeField]
-    //private UnityEvent OnButtonHold;
-
-    //[SerializeField]
-    //private UnityEvent OnButtonRelease;
 
     [SerializeField]
     Camera ARCamera;
@@ -31,17 +25,6 @@ public class DrawManager : Singleton<DrawManager>
     private bool CanDraw { get; set; }
 
     private ARAnchor anchor;
-
-    //[SerializeField]
-    //private Button drawButton;
-
-    //private bool isPressed = false;
-
-    // Start is called before the first frame update
-    //void Awake()
-    //{
-
-    //}
 
     public void Update()
     {

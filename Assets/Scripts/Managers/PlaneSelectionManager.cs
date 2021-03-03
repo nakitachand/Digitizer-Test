@@ -23,7 +23,10 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     public UnityEvent OnDeselection;
 
     [SerializeField]
-    private Button lockPlaneButton;
+    private GameObject planeButton;
+
+    [SerializeField]
+    private Text buttonText;
 
     [SerializeField]
     private ARPlaneManager aRPlaneManager;
@@ -39,6 +42,8 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         selectionResponse = GetComponent<SelectionResponse>();
 
         aRPlaneManager = GetComponent<ARPlaneManager>();
+
+        planeButton.SetActive(false);
     }
     public void Update()
     {
@@ -111,7 +116,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                 {
                     var _selection = selection;
                     selectionResponse.OnSelect(_selection);
-                    //lockPlaneButton
+                    //planeButton.SetActive(true);
                     //HidePlanes(true);
                     OnSelection?.Invoke();
                     anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
@@ -132,8 +137,26 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 
     public void HidePlanes()
     {
-        //hide all deselected planes
-        DebugManager.Instance.LogInfo($"Hide Planes.{CanSelect}");
+        //if CanSelect == true
+        //Text = "Hide Planes"
+        //else 
+        //Text = "Show Planes"
+        DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
+
+        if (CanSelect == true)
+        {
+            buttonText.GetComponentInChildren<Text>().text = "Hide Planes";
+            DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
+            aRPlaneManager.SetTrackablesActive(CanSelect);
+        }
+        else if(CanSelect == false)
+        {
+            buttonText.GetComponentInChildren<Text>().text = "Show Planes";
+            DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
+            aRPlaneManager.SetTrackablesActive(CanSelect);
+        }
+
+        
         CanSelect = !CanSelect;
         aRPlaneManager.SetTrackablesActive(CanSelect);
         

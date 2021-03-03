@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//state interface
 public interface IFlowState
 {
     void StartState(bool force = false);
