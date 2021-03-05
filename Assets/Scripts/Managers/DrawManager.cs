@@ -70,7 +70,7 @@ public class DrawManager : Singleton<DrawManager>
 
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                //DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
                 Draw(hitObject.point);
             }
         }

@@ -26,12 +26,27 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     private GameObject planeButton;
 
     [SerializeField]
-    private Text buttonText;
+    private Text planeButtonText;
+
+    [SerializeField]
+    private Text lockedButtonText;
 
     [SerializeField]
     private ARPlaneManager aRPlaneManager;
 
     private bool CanSelect
+    {
+        get;
+        set;
+    }
+
+    private bool IsShown
+    {
+        get;
+        set;
+    }
+
+    private bool IsLocked
     {
         get;
         set;
@@ -43,8 +58,10 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 
         aRPlaneManager = GetComponent<ARPlaneManager>();
 
-        planeButton.SetActive(false);
+        if (CanSelect) { planeButtonText.text = "Hide Planes"; }
+        else { planeButtonText.text = "Show Planes"; }
     }
+
     public void Update()
     {
         if (CanSelect) { return; }
@@ -57,6 +74,11 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     {
         CanSelect = !CanSelect;
     }
+
+    //public void AllowSelect(bool value)
+    //{
+    //    CanSelect = value;
+    //}
 
     public void PlaneSelectionSequence()
     {
@@ -71,9 +93,8 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                 {
                     var _selection = selection;
                     selectionResponse.OnDeselect(_selection);
-                    //LockPlaneButton(disable);
-                    //HidePlanes(false);
                     OnDeselection?.Invoke();
+                    //DebugManager.Instance.LogInfo($"OnDeselection invoked.");
                     if (aRAnchors.Any<ARAnchor>())
                     {
                         aRAnchors.RemoveAt(aRAnchors.Count - 1);
@@ -99,7 +120,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                     {
                         selection = _selection;
                         DrawManager.Instance.selectedPlane = selection;
-
+                        //DebugManager.Instance.LogInfo($"selectedPlane = selection.");
                     }
                 }
             }
@@ -116,9 +137,8 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                 {
                     var _selection = selection;
                     selectionResponse.OnSelect(_selection);
-                    //planeButton.SetActive(true);
-                    //HidePlanes(true);
                     OnSelection?.Invoke();
+                    //DebugManager.Instance.LogInfo($"OnSelection invoked.");
                     anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
                     aRAnchors.Add(selectedPlane.GetComponent<ARAnchor>());
 
@@ -133,6 +153,21 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         //hide plane prefab after 2 seconds
         //display text prompt to begin drawing
         DebugManager.Instance.LogInfo($"Lock Planes.");
+
+        if (!IsLocked) //change this variable to islocked bool
+        {
+            lockedButtonText.GetComponentInChildren<Text>().text = "Lock Plane";
+            DebugManager.Instance.LogInfo($"Locked = {IsLocked}");
+            //Lock Plane function;
+        }
+        else
+        {
+            lockedButtonText.GetComponentInChildren<Text>().text = "Unlock Plane";
+            DebugManager.Instance.LogInfo($"Locked = {IsLocked}");
+            //Unlock Plane function;
+        }
+
+        IsShown = !IsShown;
     }
 
     public void HidePlanes()
@@ -143,25 +178,29 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         //Text = "Show Planes"
         DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
 
-        if (CanSelect == true)
+        IsShown = true;
+
+        if (IsShown)
         {
-            buttonText.GetComponentInChildren<Text>().text = "Hide Planes";
-            DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
-            aRPlaneManager.SetTrackablesActive(CanSelect);
+            planeButtonText.GetComponentInChildren<Text>().text = "Hide Planes";
+            DebugManager.Instance.LogInfo($"Can Select = {IsShown}");
+            SetTrackablesActive(!IsShown);
         }
-        else if(CanSelect == false)
+        else
         {
-            buttonText.GetComponentInChildren<Text>().text = "Show Planes";
-            DebugManager.Instance.LogInfo($"Can Select = {CanSelect}");
-            aRPlaneManager.SetTrackablesActive(CanSelect);
+            planeButtonText.GetComponentInChildren<Text>().text = "Show Planes";
+            DebugManager.Instance.LogInfo($"Can Select = {IsShown}");
+            SetTrackablesActive(IsShown);
         }
 
         
         CanSelect = !CanSelect;
-        aRPlaneManager.SetTrackablesActive(CanSelect);
+        //aRPlaneManager.SetTrackablesActive(CanSelect);
         
     }
 
     public void SetTrackablesActive(bool active)
-    { }
+    {
+        aRPlaneManager.SetTrackablesActive(active);
+    }
 }

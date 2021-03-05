@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class ScreenUtils
 { 
@@ -16,4 +19,13 @@ public class ScreenUtils
 
         return new Vector2(screenCenterX, screenCenterY);
     }
+
+    
+}
+
+
+[System.Serializable]
+public class PointerUnityEvent: UnityEvent<PointerEventData>
+    {
+
 }

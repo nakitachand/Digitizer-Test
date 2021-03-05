@@ -12,6 +12,16 @@ public class PlaneSelector : MonoBehaviour
 {
     private bool planeIsSelected;
 
+    private bool isLocked;
+
+    [SerializeField]
+    private Material selectedMaterial;
+
+    [SerializeField]
+    private Material originalMaterial;
+
+    
+
     public bool IsSelected
     {
         get
@@ -22,6 +32,33 @@ public class PlaneSelector : MonoBehaviour
         set
         {
             planeIsSelected = value;
+        }
+    }
+
+    public bool Locked
+    {
+        get
+        {
+            return this.isLocked;
+        }
+
+        set
+        {
+            isLocked = value;
+        }
+    }
+
+    public void ToggleSelection()
+    {
+        IsSelected = !IsSelected;
+
+        if(IsSelected)
+        {
+            this.GetComponent<Renderer>().material = selectedMaterial;
+        }
+        else
+        {
+            this.GetComponent<Renderer>().material = originalMaterial;
         }
     }
 
