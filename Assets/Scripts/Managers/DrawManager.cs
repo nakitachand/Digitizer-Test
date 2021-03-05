@@ -34,6 +34,7 @@ public class DrawManager : Singleton<DrawManager>
     public void AllowDraw()
     {
         CanDraw = !CanDraw;
+        DebugManager.Instance.LogInfo($"{CanDraw}");
     }
 
     public void AllowDraw(bool value)

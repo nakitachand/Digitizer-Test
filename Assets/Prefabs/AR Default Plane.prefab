@@ -15,8 +15,7 @@ GameObject:
   - component: {fileID: 8287722964139031581}
   - component: {fileID: 8945428360940224220}
   - component: {fileID: 7324353988988549080}
-  - component: {fileID: 4091336501297150560}
-  - component: {fileID: 9135879898511531278}
+  - component: {fileID: 2521327145441317360}
   m_Layer: 0
   m_Name: AR Default Plane
   m_TagString: DetectedPlane
@@ -225,7 +224,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 1
---- !u!114 &4091336501297150560
+--- !u!114 &2521327145441317360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,40 +238,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedMaterial: {fileID: 2100000, guid: caa9a37c967f3e34faafa5ec2506119b, type: 2}
   originalMaterial: {fileID: 2100000, guid: 059ecb82508cec743b9608304909fc40, type: 2}
---- !u!114 &9135879898511531278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7873621090881526610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90b155e802516f047a458b4ad022a271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  markEventsAsUsed: 0
-  OnPointerDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4091336501297150560}
-        m_TargetAssemblyTypeName: PlaneSelector, Assembly-CSharp
-        m_MethodName: ToggleSelection
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerDragged:
-    m_PersistentCalls:
-      m_Calls: []

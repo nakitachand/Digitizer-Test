@@ -45,6 +45,7 @@ public class FlowBaseState : MonoBehaviour, IFlowState
     public void StartState(bool force = false)
     {
         OnStartState?.Invoke();
+        DebugManager.Instance.LogInfo($"{FlowStateHandler.Instance.CurrentStateData.stateName}");
         if(animationClip)
         {
             StartCoroutine(PlayAnimationDelay(animationDelay, animationClip));

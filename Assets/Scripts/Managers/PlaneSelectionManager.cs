@@ -201,6 +201,6 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 
     public void SetTrackablesActive(bool active)
     {
-        aRPlaneManager.SetTrackablesActive(active);
+        aRPlaneManager.SetTrackablesActive(!active);
     }
 }
