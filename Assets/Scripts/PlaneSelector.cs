@@ -55,10 +55,12 @@ public class PlaneSelector : MonoBehaviour
         if(IsSelected)
         {
             this.GetComponent<Renderer>().material = selectedMaterial;
+            DrawManager.Instance.selectedPlane = this.transform;
         }
         else
         {
             this.GetComponent<Renderer>().material = originalMaterial;
+            DrawManager.Instance.selectedPlane = null;
         }
     }
 

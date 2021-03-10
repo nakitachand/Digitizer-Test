@@ -9,6 +9,8 @@ public class FlowBaseState : MonoBehaviour, IFlowState
     [SerializeField]
     private float nextStateDelay = 1.0f;
     public bool movingToNextState = false;
+    public bool movingToHomeState = false;
+    public bool movingToPrevState = false;
 
     [SerializeField]
     public UnityEvent OnStartState;
@@ -34,11 +36,39 @@ public class FlowBaseState : MonoBehaviour, IFlowState
         movingToNextState = true;
     }
 
+    public virtual void GoToHomeState()
+    {
+        
+        //calls GoToHomeState base method in FlowStateHandler singleton
+        if (!movingToHomeState)
+        {
+            FlowStateHandler.Instance.GoToHomeState(nextStateDelay);
+        }
+        
+        movingToHomeState = true;
+        
+    }
+
+    public virtual void PrevState()
+    {
+        //calls PrevState() base method in FlowStateHandler singleton 
+        if (!movingToPrevState)
+        {
+            FlowStateHandler.Instance.PreviousState(nextStateDelay);
+        }
+
+        movingToPrevState = true;
+    }
+
     //implementation from IFlowState
     public void EndState(bool force = false)
     {
         OnEndState?.Invoke();
         StopAllCoroutines();
+        movingToHomeState = false;
+        movingToPrevState = false;
+        movingToNextState = false;
+        
     }
 
     //implementation from IFlowState
@@ -58,10 +88,5 @@ public class FlowBaseState : MonoBehaviour, IFlowState
         yield return new WaitForSeconds(delay);
     }
 
-    // Start is called before the first frame update
-    //void Start()
-
-    //{
-    //    DebugManager.Instance.LogInfo($"{nextStateDelay}");
-    //}
+   
 }

@@ -26,6 +26,6 @@ public class ScreenUtils
 
 [System.Serializable]
 public class PointerUnityEvent: UnityEvent<PointerEventData>
-    {
+{
 
 }

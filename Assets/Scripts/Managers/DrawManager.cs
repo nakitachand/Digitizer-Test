@@ -26,6 +26,14 @@ public class DrawManager : Singleton<DrawManager>
 
     private ARAnchor anchor;
 
+    [SerializeField]
+    private GameObject reticle;
+
+    private void Start()
+    {
+        Instantiate(reticle, new Vector3(Screen.width/2, Screen.height/2, 0), Quaternion.identity);
+    }
+
     public void Update()
     {
         if (!CanDraw) { return; }
@@ -53,7 +61,7 @@ public class DrawManager : Singleton<DrawManager>
         }
         else
         {
-            DebugManager.Instance.LogInfo($"{drawPosition}");
+            //DebugManager.Instance.LogInfo($"{drawPosition}");
             TraceLines[0].AddPoint(drawPosition);
         }
 
@@ -71,7 +79,7 @@ public class DrawManager : Singleton<DrawManager>
 
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
+                //DebugManager.Instance.LogInfo($"hitTransform is {hitObject.point}, {CanDraw}");
                 Draw(hitObject.point);
             }
         }

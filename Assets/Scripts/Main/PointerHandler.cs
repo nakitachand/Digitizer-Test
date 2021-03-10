@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 /// 
 /// Heavily inspired by MRTK PointerHandler
 /// </summary>
-public class PointerHandler : MonoBehaviour, IPointerClickHandler, IARPointerHandler
+public class PointerHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IARPointerHandler
 {
     [SerializeField]
     [Tooltip("Whether input events should be marked as used after handling so other handlers in the same game object ignore them")]
@@ -85,6 +85,16 @@ public class PointerHandler : MonoBehaviour, IPointerClickHandler, IARPointerHan
     {
         OnPointerClicked.Invoke(eventData);
         Debug.Log(eventData.pressPosition);
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        OnPointerDown.Invoke(eventData);
+    }
+
+    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+    {
+        OnPointerUp.Invoke(eventData);
     }
     //public override void Process()
     //{

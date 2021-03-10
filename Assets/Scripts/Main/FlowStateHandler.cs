@@ -86,6 +86,31 @@ public class FlowStateHandler : Singleton<FlowStateHandler>
             SetState(CurrentState + 1);
         }
     }
+
+    public void GoToHomeState(float delay)
+    {
+        SetState(0);
+    }
+
+    public void PreviousState(float delay)
+    {
+        StartCoroutine(InternalPrevState(delay));
+    }
+
+    private IEnumerator InternalPrevState(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        //checks that current state is not the first state
+        //if (CurrentState - 1 < 0)
+        //{
+            //increments and sets current state value to next state value
+            SetState(CurrentState - 1);
+        //}
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {

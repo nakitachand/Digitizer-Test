@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Networking;
 
 public class CameraCapture : MonoBehaviour
 {
@@ -10,20 +11,16 @@ public class CameraCapture : MonoBehaviour
 
     public int fileCounter;
     
-    // Start is called before the first frame update
-    void Start()
+    
+
+    public void CaptureScreen()
     {
-        
+        StartCoroutine(Capture());
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator Capture()
     {
-        
-    }
-
-    public void Capture()
-    {
+        yield return new WaitForEndOfFrame();
         RenderTexture renderTexture = RenderTexture.active;
         RenderTexture.active = ARCamera.targetTexture;
         ARCamera.Render();
@@ -32,5 +29,34 @@ public class CameraCapture : MonoBehaviour
         image.Apply();
 
         byte[] bytes = image.EncodeToPNG();
+
+        //Save bytes to SaveData
+        SaveData currentData = new SaveData();
+        currentData.image = image;
+        currentData.bytes = bytes;
+
+        SaveImage(currentData);
+
+        // Create a Web Form
+        WWWForm form = new WWWForm();
+        form.AddField("frameCount", Time.frameCount.ToString());
+        form.AddBinaryData("fileUpload", bytes);
+        // Upload to a cgi script
+        var w = UnityWebRequest.Post("http://localhost/cgi-bin/env.cgi?post", form);
+        yield return w.SendWebRequest();
+        if (w.isNetworkError || w.isHttpError)
+        {
+            Debug.Log(w.error);
+        }
+        else
+        {
+            Debug.Log("Finished Uploading Screenshot");
+        }
     }
+
+    public void SaveImage(SaveData saveData)
+    {
+
+    }
+
 }

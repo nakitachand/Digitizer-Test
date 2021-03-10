@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SaveData 
 {
-    Texture2D image;
-    byte[] bytes;
+    public Texture2D image;
+    public byte[] bytes;
     
 }

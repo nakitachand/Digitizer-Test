@@ -10,7 +10,7 @@ public class DebugManager : Singleton<DebugManager>
     private Text text;
 
     [SerializeField]
-    private int maxLines = 100;
+    private int maxLines = 8;
 
     public void LogInfo (string message)
     {
