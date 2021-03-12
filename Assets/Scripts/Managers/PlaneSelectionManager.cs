@@ -12,8 +12,9 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
 {
     [SerializeField]
     private Camera arCamera;
+    
     private Vector2 touchPosition = default;
-    private Transform selection;
+    private Transform lastSelectedObject;
     private ISelectionResponse selectionResponse;
     private ARAnchorManager anchorManager;
     private List<ARAnchor> aRAnchors = new List<ARAnchor>();
@@ -75,6 +76,12 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         planeButton.onClick.AddListener(ToggleText);
     }
 
+    public void OnDisable()
+    {
+        planeButton.onClick.RemoveListener(TogglePlanes);
+        planeButton.onClick.RemoveListener(ToggleText);
+    }
+
     public void Update()
     {
         if (CanSelect) { return; }
@@ -103,17 +110,7 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
             touchPosition = touch.position;
             if (touch.phase == TouchPhase.Began)
             {
-                if (selection != null)
-                {
-                    var _selection = selection;
-                    selectionResponse.OnDeselect(_selection);
-                    OnDeselection?.Invoke();
-                    //DebugManager.Instance.LogInfo($"OnDeselection invoked.");
-                    if (aRAnchors.Any<ARAnchor>())
-                    {
-                        aRAnchors.RemoveAt(aRAnchors.Count - 1);
-                    }
-                }
+                HandleDeselection(lastSelectedObject);
             }
         }
         #region raycast
@@ -132,9 +129,9 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
                     selectedPlane = hitObject.transform.GetComponent<ARPlane>();
                     if (selectedPlane && selectedTransform)
                     {
-                        selection = _selection;
-                        DrawManager.Instance.selectedPlane = selection;
-                        //DebugManager.Instance.LogInfo($"selectedPlane = selection.");
+                        lastSelectedObject = _selection;
+                        DrawManager.Instance.selectedPlane = lastSelectedObject;
+                        
                     }
                 }
             }
@@ -147,42 +144,10 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
             touchPosition = touch.position;
             if (touch.phase == TouchPhase.Began)
             {
-                if (selection != null)
-                {
-                    var _selection = selection;
-                    selectionResponse.OnSelect(_selection);
-                    OnSelection?.Invoke();
-                    //DebugManager.Instance.LogInfo($"OnSelection invoked.");
-                    anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
-                    aRAnchors.Add(selectedPlane.GetComponent<ARAnchor>());
-
-                }
+                HandleSelection(lastSelectedObject);
             }
         }
     }
-
-    //public void LockPlaneButton()
-    //{
-    //    //keep selected plane fixed and visible
-    //    //hide plane prefab after 2 seconds
-    //    //display text prompt to begin drawing
-    //    DebugManager.Instance.LogInfo($"Lock Planes.");
-
-    //    if (!IsLocked) //change this variable to islocked bool
-    //    {
-    //        lockedButtonText.GetComponentInChildren<Text>().text = "Lock Plane";
-    //        DebugManager.Instance.LogInfo($"Locked = {IsLocked}");
-    //        //Lock Plane function;
-    //    }
-    //    else
-    //    {
-    //        lockedButtonText.GetComponentInChildren<Text>().text = "Unlock Plane";
-    //        DebugManager.Instance.LogInfo($"Locked = {IsLocked}");
-    //        //Unlock Plane function;
-    //    }
-
-        
-    //}
 
     public void TogglePlanes() //add arg: bool value
     {
@@ -210,6 +175,33 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         else
         {
             planeButtonText.GetComponentInChildren<Text>().text = "Show Planes";
+        }
+    }
+
+    public void HandleSelection(Transform selected)
+    {
+        if (lastSelectedObject != null)
+        {
+            var _selection = lastSelectedObject;
+            selectionResponse.OnSelect(_selection);
+            OnSelection?.Invoke();
+            anchorManager.AttachAnchor(selectedPlane, new Pose(_selection.position, _selection.rotation));
+            aRAnchors.Add(selectedPlane.GetComponent<ARAnchor>());
+
+        }
+    }
+
+    public void HandleDeselection(Transform deselected)
+    {
+        if (lastSelectedObject != null)
+        {
+            var _selection = lastSelectedObject;
+            selectionResponse.OnDeselect(_selection);
+            OnDeselection?.Invoke();
+            if (aRAnchors.Any<ARAnchor>())
+            {
+                aRAnchors.RemoveAt(aRAnchors.Count - 1);
+            }
         }
     }
 

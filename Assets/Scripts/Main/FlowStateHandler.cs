@@ -20,7 +20,7 @@ public class FlowStateHandler : Singleton<FlowStateHandler>
         private set;
     }
 
-    public bool isShuttingDown
+    public bool IsShuttingDown
     {
         get;
         private set;
@@ -28,7 +28,7 @@ public class FlowStateHandler : Singleton<FlowStateHandler>
 
     private void Awake()
     {
-        isShuttingDown = false;
+        IsShuttingDown = false;
     }
 
     private void SetGameObjectsActive(GameObject[] gameObjects, bool active = true)

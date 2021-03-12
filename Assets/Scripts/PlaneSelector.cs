@@ -12,7 +12,7 @@ public class PlaneSelector : MonoBehaviour
 {
     private bool planeIsSelected;
 
-    private bool isLocked;
+    //private bool isLocked;
 
     [SerializeField]
     private Material selectedMaterial;
@@ -35,18 +35,18 @@ public class PlaneSelector : MonoBehaviour
         }
     }
 
-    public bool Locked
-    {
-        get
-        {
-            return this.isLocked;
-        }
+    //public bool Locked
+    //{
+    //    get
+    //    {
+    //        return this.isLocked;
+    //    }
 
-        set
-        {
-            isLocked = value;
-        }
-    }
+    //    set
+    //    {
+    //        isLocked = value;
+    //    }
+    //}
 
     public void ToggleSelection()
     {
@@ -55,12 +55,12 @@ public class PlaneSelector : MonoBehaviour
         if(IsSelected)
         {
             this.GetComponent<Renderer>().material = selectedMaterial;
-            DrawManager.Instance.selectedPlane = this.transform;
+            //check if plane selected = static variable for lastSelectedPlane
+            //static variable for plane selected
         }
         else
         {
             this.GetComponent<Renderer>().material = originalMaterial;
-            DrawManager.Instance.selectedPlane = null;
         }
     }
 

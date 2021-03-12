@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//SelectionReponse implements the "Selection" and "Deselection" methods for plane selection
+//SelectionReponse implements the "Selection" and "Deselection" methods from ISelectionResponse
 //passes in the transform of the plane in question
 //and appropriately changes the material based on the value of "PlaneSelector.IsSelected"
 
@@ -27,7 +27,6 @@ public class SelectionResponse : MonoBehaviour, ISelectionResponse
         {
             selectedPlane.IsSelected = true;
             selectedPlane.ToggleSelectedMaterial(selectedMaterial);
-            //show "LockPlane" button
         }
     }
 }

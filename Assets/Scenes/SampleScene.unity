@@ -774,10 +774,10 @@ RectTransform:
   m_Father: {fileID: 196492695}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.84000003, y: 0.8166875}
-  m_AnchorMax: {x: 0.9666667, y: 0.88156253}
-  m_AnchoredPosition: {x: 0, y: 3}
-  m_SizeDelta: {x: 0, y: 3}
+  m_AnchorMin: {x: 0.84000003, y: 0.81700003}
+  m_AnchorMax: {x: 0.9666667, y: 0.81700003}
+  m_AnchoredPosition: {x: -0.000061035156, y: 72}
+  m_SizeDelta: {x: 0, y: 72}
   m_Pivot: {x: 1, y: 1}
 --- !u!95 &259715465
 Animator:
@@ -1932,10 +1932,10 @@ RectTransform:
   m_Father: {fileID: 196492695}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 406.00006, y: 597}
-  m_SizeDelta: {x: 150, y: 150}
+  m_AnchorMin: {x: 0.71333337, y: 0.629875}
+  m_AnchorMax: {x: 0.9666667, y: 0.77000004}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &821018167
 Animator:
@@ -1999,7 +1999,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1934682760}
         m_TargetAssemblyTypeName: DrawManager, Assembly-CSharp
         m_MethodName: ClearLines
         m_Mode: 1
@@ -3248,8 +3248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dbb046c91c2464d9387038f9a63864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedMaterial: {fileID: 2100000, guid: caa9a37c967f3e34faafa5ec2506119b, type: 2}
-  deSelectedMaterial: {fileID: 2100000, guid: 059ecb82508cec743b9608304909fc40, type: 2}
+  selectedMaterial: {fileID: 2100000, guid: 26cb9d384662e044198b37ad5944b0e6, type: 2}
+  deSelectedMaterial: {fileID: 2100000, guid: dae402daef2b7c24a8ae06917faf62cd, type: 2}
 --- !u!114 &1633285514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3450,6 +3450,7 @@ GameObject:
   - component: {fileID: 1697808854}
   - component: {fileID: 1697808853}
   - component: {fileID: 1697808852}
+  - component: {fileID: 1697808856}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: MainCamera
@@ -3557,6 +3558,22 @@ Transform:
   m_Father: {fileID: 1960976095}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1697808856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697808850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &1704342429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4065,10 +4082,10 @@ RectTransform:
   m_Father: {fileID: 196492695}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.84000003, y: 0.91168755}
+  m_AnchorMin: {x: 0.84000003, y: 0.97937506}
   m_AnchorMax: {x: 0.9666667, y: 0.97937506}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 72}
   m_Pivot: {x: 1, y: 1}
 --- !u!95 &2014790524
 Animator:
