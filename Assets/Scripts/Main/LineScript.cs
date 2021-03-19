@@ -13,6 +13,7 @@ public class LineScript : MonoBehaviour
     }
 
     private Vector3 previousPointDistance = Vector3.zero;
+
     private LineRenderer LineRenderer
     {
         get;
@@ -26,7 +27,6 @@ public class LineScript : MonoBehaviour
         if (previousPointDistance == null)
         {
             previousPointDistance = point;
-
         }
 
         if (previousPointDistance != null && Mathf.Abs(Vector3.Distance(previousPointDistance, point)) >= TraceLineSettings.MinDistanceBetweenPoints)
@@ -51,7 +51,7 @@ public class LineScript : MonoBehaviour
     {
         positionCount = 2;
 
-        GameObject newLine = new GameObject($"Trace Line");
+        GameObject newLine = new GameObject($"Line");
         newLine.transform.parent = anchor?.transform ?? parent;
 
         newLine.transform.position = position;
@@ -70,7 +70,7 @@ public class LineScript : MonoBehaviour
         line.SetPosition(0, position);
         line.SetPosition(1, position);
         LineRenderer = line;
-        DebugManager.Instance.LogInfo($"New Line Renderer added.");
+        //DebugManager.Instance.LogInfo($"{TraceLineSettings.GameObjectTag}");
     }
 
 }

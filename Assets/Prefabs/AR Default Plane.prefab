@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8945428360940224220}
   - component: {fileID: 7324353988988549080}
   - component: {fileID: 2521327145441317360}
-  - component: {fileID: 7071423134998266646}
+  - component: {fileID: 8603488888976775940}
   m_Layer: 0
   m_Name: AR Default Plane
   m_TagString: DetectedPlane
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedMaterial: {fileID: 2100000, guid: caa9a37c967f3e34faafa5ec2506119b, type: 2}
   originalMaterial: {fileID: 2100000, guid: 059ecb82508cec743b9608304909fc40, type: 2}
---- !u!114 &7071423134998266646
+--- !u!114 &8603488888976775940
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +263,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2521327145441317360}
         m_TargetAssemblyTypeName: PlaneSelector, Assembly-CSharp
-        m_MethodName: ToggleSelection
+        m_MethodName: HandleSelection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

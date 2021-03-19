@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 using UnityEngine.Networking;
 
 public class CameraCapture : MonoBehaviour
@@ -10,8 +11,11 @@ public class CameraCapture : MonoBehaviour
     private Camera ARCamera;
 
     public int fileCounter;
-    
-    
+
+    private string currentDate;
+
+    [SerializeField]
+    private GameObject canvasRenderer;
 
     public void CaptureScreen()
     {
@@ -36,27 +40,34 @@ public class CameraCapture : MonoBehaviour
         currentData.bytes = bytes;
 
         SaveImage(currentData);
-
-        // Create a Web Form
-        WWWForm form = new WWWForm();
-        form.AddField("frameCount", Time.frameCount.ToString());
-        form.AddBinaryData("fileUpload", bytes);
-        // Upload to a cgi script
-        var w = UnityWebRequest.Post("http://localhost/cgi-bin/env.cgi?post", form);
-        yield return w.SendWebRequest();
-        if (w.isNetworkError || w.isHttpError)
-        {
-            Debug.Log(w.error);
-        }
-        else
-        {
-            Debug.Log("Finished Uploading Screenshot");
-        }
+        string storagePath = Application.persistentDataPath;
+        string date = DateTime.Now.ToString("yyyy-dd-MM-hh-mm-ss");
+        currentDate = date;
+        File.WriteAllBytes(storagePath + $"/Digitizer/Trace Drawing {date}", bytes);
     }
 
     public void SaveImage(SaveData saveData)
     {
+        string dataAsString = JsonUtility.ToJson(saveData);
+        PlayerPrefs.SetString("Trace Drawing", dataAsString);
+        PlayerPrefs.Save();
+    }
 
+    public void LoadImage(SaveData saveData)
+    {
+        Texture2D loadImage = new Texture2D(ARCamera.targetTexture.width, ARCamera.targetTexture.height);
+        if(File.Exists(Application.persistentDataPath+$"/Digitizer/Trace Drawing {currentDate}"))
+        {
+            byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + $"/Digitizer/Trace Drawing {currentDate}");
+            loadImage.LoadImage(bytes);
+            canvasRenderer.GetComponent<Renderer>().material.mainTexture = loadImage;
+            //might be getcomponent<image>
+        }
+
+        if(PlayerPrefs.HasKey("Trace Drawing"))
+        {
+            //File.
+        }
     }
 
 }

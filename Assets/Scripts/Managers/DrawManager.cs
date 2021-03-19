@@ -45,28 +45,12 @@ public class DrawManager : Singleton<DrawManager>
         DebugManager.Instance.LogInfo($"{CanDraw}");
     }
 
+    //linked to state change events
     public void AllowDraw(bool value)
     {
         CanDraw = value;
     }
 
-    public void Draw(Vector3 drawPosition)
-    {
-        
-        if (TraceLines.Keys.Count == 0)
-        {
-            LineScript line = new LineScript(TraceLineSettings);
-            TraceLines.Add(lineIndex, line);
-            line.AddNewLineRenderer(this.transform, drawPosition, anchor);
-        }
-        else
-        {
-            //DebugManager.Instance.LogInfo($"{drawPosition}");
-            TraceLines[0].AddPoint(drawPosition);
-        }
-
-        OnDraw?.Invoke();
-    }
 
     public void DrawOnTouch()
     {
@@ -89,6 +73,27 @@ public class DrawManager : Singleton<DrawManager>
         }
     }
 
+
+    public void Draw(Vector3 drawPosition)
+    {
+        
+        if (TraceLines.Keys.Count == 0)
+        {
+            LineScript line = new LineScript(TraceLineSettings);
+            TraceLines.Add(lineIndex, line);
+            line.AddNewLineRenderer(this.transform, drawPosition, anchor);
+        }
+        else
+        {
+            //DebugManager.Instance.LogInfo($"{drawPosition}");
+            TraceLines[0].AddPoint(drawPosition);
+        }
+
+        OnDraw?.Invoke();
+    }
+
+
+
     public void StopDrawing()
     {
         TraceLines.Remove(0);
@@ -101,13 +106,18 @@ public class DrawManager : Singleton<DrawManager>
 
     public void ClearLines()
     {
+        DebugManager.Instance.LogInfo($"CL Initiated");
         GameObject[] Lines = GetAllLinesInScene();
-
+        //Lines[0] = TraceLines<0,0 >;
+        //GetAllLinesInScene();
+        DebugManager.Instance.LogInfo($"{TraceLines.Count}");
         foreach (GameObject TraceLine in Lines)
         {
-            LineRenderer line = TraceLine.GetComponent<LineRenderer>();
-            Destroy(line);
+            //LineRenderer line = TraceLine.GetComponent<LineRenderer>();
+            Destroy(TraceLine);
+            DebugManager.Instance.LogInfo($"line iteration completed");
         }
+        DebugManager.Instance.LogInfo($"loop completed");
     }
 
     public void ShowLines()
