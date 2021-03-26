@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class CameraCapture : MonoBehaviour
 {
@@ -53,14 +54,23 @@ public class CameraCapture : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void LoadImage(SaveData saveData)
+    public void LoadImagePlayerPerfs()
+    {
+        if(PlayerPrefs.HasKey("Trace Drawing"))
+        {
+            string dataAsString = PlayerPrefs.GetString("Trace Drawing");
+            JsonUtility.FromJson(dataAsString, typeof(SaveData));
+        }
+    }
+
+    public void LoadImage()
     {
         Texture2D loadImage = new Texture2D(ARCamera.targetTexture.width, ARCamera.targetTexture.height);
         if(File.Exists(Application.persistentDataPath+$"/Digitizer/Trace Drawing {currentDate}"))
         {
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + $"/Digitizer/Trace Drawing {currentDate}");
             loadImage.LoadImage(bytes);
-            canvasRenderer.GetComponent<Renderer>().material.mainTexture = loadImage;
+            canvasRenderer.GetComponent<Image>().material.mainTexture = loadImage;
             //might be getcomponent<image>
         }
 

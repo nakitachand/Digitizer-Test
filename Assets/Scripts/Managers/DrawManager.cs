@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 //[RequireComponent(typeof(ARAnchorManager))]
 public class DrawManager : Singleton<DrawManager>
@@ -29,6 +31,9 @@ public class DrawManager : Singleton<DrawManager>
     [SerializeField]
     private GameObject reticle;
 
+    [SerializeField]
+    private PointerHandler drawButton;
+
     private void Start()
     {
         Instantiate(reticle, new Vector3(Screen.width/2, Screen.height/2, 0), Quaternion.identity);
@@ -39,16 +44,29 @@ public class DrawManager : Singleton<DrawManager>
         if (!CanDraw) { return; }
         DrawOnTouch();
     }
-    public void AllowDraw()
+    public void ToggleAllowDraw()
     {
         CanDraw = !CanDraw;
         DebugManager.Instance.LogInfo($"{CanDraw}");
+    }
+
+    public void AllowDraw(PointerEventData data)
+    {
+        CanDraw = true;
+        DebugManager.Instance.LogInfo($"Allow Draw called");
+    }
+
+    public void DontAllowDraw(PointerEventData data)
+    {
+        CanDraw = false;
+        DebugManager.Instance.LogInfo($"Dont Allow Draw called");
     }
 
     //linked to state change events
     public void AllowDraw(bool value)
     {
         CanDraw = value;
+        DebugManager.Instance.LogInfo($"{CanDraw}");
     }
 
 
@@ -115,9 +133,13 @@ public class DrawManager : Singleton<DrawManager>
         {
             //LineRenderer line = TraceLine.GetComponent<LineRenderer>();
             Destroy(TraceLine);
-            DebugManager.Instance.LogInfo($"line iteration completed");
+            //DebugManager.Instance.LogInfo($"line iteration completed");
         }
-        DebugManager.Instance.LogInfo($"loop completed");
+        DebugManager.Instance.LogInfo($"{CanDraw}, {FlowStateHandler.Instance.CurrentStateData.stateName}");
+
+        drawButton.OnPointerDown.AddListener(AllowDraw);
+        drawButton.OnPointerUp.AddListener(DontAllowDraw);
+
     }
 
     public void ShowLines()
