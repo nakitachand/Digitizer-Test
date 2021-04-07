@@ -20,11 +20,13 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     private Button planeButton;
 
     [SerializeField]
-    private Text planeButtonText;
-
+    private ARPlaneManager aRPlaneManager;
 
     [SerializeField]
-    private ARPlaneManager aRPlaneManager;
+    private Image showIcon;
+
+    [SerializeField]
+    private Image hideIcon;
 
 
     //private Vector2 touchPosition = default;
@@ -40,21 +42,13 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
         set;
     }
 
-
     private bool isShown = false;
 
     //bool property to get/set isShown value above for showing/hiding planes
     public bool IsShown
     {
-        get 
-        {
-            return this.isShown;
-        }
-
-        set
-        {
-            isShown = value;
-        }
+        get {return this.isShown;}
+        set {isShown = value;}
     }
 
     public bool usingPointerHandler = false;
@@ -63,8 +57,6 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     //{
     //    selectionResponse = GetComponent<SelectionResponse>();
     //}
-
-
 
     public void Update()
     {
@@ -82,13 +74,13 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     public void OnEnable() //for plane visibility button
     {
         planeButton.onClick.AddListener(TogglePlanes);
-        planeButton.onClick.AddListener(ToggleText);
+        planeButton.onClick.AddListener(ToggleIcon);
     }
 
     public void OnDisable() //for plane visibility button
     {
         planeButton.onClick.RemoveListener(TogglePlanes);
-        planeButton.onClick.RemoveListener(ToggleText);
+        planeButton.onClick.RemoveListener(ToggleIcon);
     }
 
     //function linked to UI button to toggle plane visibility
@@ -109,16 +101,18 @@ public class PlaneSelectionManager : Singleton<PlaneSelectionManager>
     }
 
 
-    //function linked to UI button text to update visibility action type when pressed
-    public void ToggleText()
+    //function linked to UI button toggle show/hide icons when pressed
+    public void ToggleIcon()
     {
         if(isShown)
         {
-            planeButtonText.GetComponentInChildren<Text>().text = "Hide Planes";
+            hideIcon.gameObject.SetActive(true);
+            showIcon.gameObject.SetActive(false);
         }
         else
         {
-            planeButtonText.GetComponentInChildren<Text>().text = "Show Planes";
+            hideIcon.gameObject.SetActive(false);
+            showIcon.gameObject.SetActive(true);
         }
     }
 

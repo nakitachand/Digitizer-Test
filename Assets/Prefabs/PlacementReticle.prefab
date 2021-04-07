@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4546656486343073517}
-  m_Layer: 2
+  - component: {fileID: 1704342432}
+  m_Layer: 5
   m_Name: PlacementReticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +33,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &1704342432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3770400540450882647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e1be69913b11a94998656ce36f7b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4837568793335152184
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +56,7 @@ GameObject:
   - component: {fileID: 7603271634584697946}
   - component: {fileID: 3894690825646444416}
   - component: {fileID: 1714007592428589199}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Disc_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +137,7 @@ GameObject:
   - component: {fileID: 4663512402618857855}
   - component: {fileID: 1800881417281075214}
   - component: {fileID: 983697147622323924}
-  m_Layer: 2
+  m_Layer: 5
   m_Name: Disc
   m_TagString: Untagged
   m_Icon: {fileID: 0}

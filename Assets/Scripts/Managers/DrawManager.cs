@@ -59,14 +59,14 @@ public class DrawManager : Singleton<DrawManager>
     public void DontAllowDraw(PointerEventData data)
     {
         CanDraw = false;
-        DebugManager.Instance.LogInfo($"Dont Allow Draw called");
+        //DebugManager.Instance.LogInfo($"Dont Allow Draw called");
     }
 
     //linked to state change events
     public void AllowDraw(bool value)
     {
         CanDraw = value;
-        DebugManager.Instance.LogInfo($"{CanDraw}");
+        //DebugManager.Instance.LogInfo($"{CanDraw}");
     }
 
 
@@ -124,18 +124,19 @@ public class DrawManager : Singleton<DrawManager>
 
     public void ClearLines()
     {
-        DebugManager.Instance.LogInfo($"CL Initiated");
+        //DebugManager.Instance.LogInfo($"CL Initiated");
         GameObject[] Lines = GetAllLinesInScene();
         //Lines[0] = TraceLines<0,0 >;
         //GetAllLinesInScene();
-        DebugManager.Instance.LogInfo($"{TraceLines.Count}");
+        //DebugManager.Instance.LogInfo($"{TraceLines.Count}");
         foreach (GameObject TraceLine in Lines)
         {
             //LineRenderer line = TraceLine.GetComponent<LineRenderer>();
             Destroy(TraceLine);
             //DebugManager.Instance.LogInfo($"line iteration completed");
         }
-        DebugManager.Instance.LogInfo($"{CanDraw}, {FlowStateHandler.Instance.CurrentStateData.stateName}");
+        ToggleAllowDraw();
+        //DebugManager.Instance.LogInfo($"{CanDraw}, {FlowStateHandler.Instance.CurrentStateData.stateName}");
 
         drawButton.OnPointerDown.AddListener(AllowDraw);
         drawButton.OnPointerUp.AddListener(DontAllowDraw);
